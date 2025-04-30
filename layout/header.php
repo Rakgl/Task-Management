@@ -55,7 +55,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <h1>Task Management</h1>
         <nav>
             <a href="dashboard.php">Dashboard</a>
-            <a href="logout.php">Logout</a>
+            <a href="index.php?page=login">Logout</a>
         </nav>
     </header>
 </body>

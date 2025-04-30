@@ -1,6 +1,6 @@
 <?php
-$db_host = 'localhost';
-$db_port = 8889; // Default MAMP MySQL port
+$db_host = '127.0.0.1';
+$db_port = 3306; 
 $db_user = 'root';
 $db_password = 'Rak077871078';
 $db_db = 'task_management';
@@ -13,19 +13,3 @@ try {
     die("Connection failed: " . $e->getMessage());
 }
 ?>
-<!-- 
-<?php
-function connection() {
-    $host = "localhost";
-    $username = "root";
-    $password = "Rak077871078"; // Leave empty if no password
-    $database = "task_management";
-
-    $conn = new mysqli($host, $username, $password, $database);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    return $conn;
-}
-?> -->

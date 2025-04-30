@@ -47,10 +47,9 @@
             include_once 'views/auth/register.php';
             break;
         case 'logout':
-            include_once 'controllers/logout.php';
+            include_once 'views/auth/logout.php';
             break;
-        default:
-            include_once 'views/404.php';
+        
     }
     include_once './layout/footer.php'
 ?>

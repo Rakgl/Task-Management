@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (isset($_SESSION['user_id'])) {
-    header('Location: index.php?page=dashboard');
+    header('Location: index.php?page=login.php');
     exit();
 }
 
@@ -21,14 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             // Check if the username exists
             $stmt = $pdo->prepare('SELECT * FROM users WHERE username = ?');
-
             $stmt->execute([$username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($user && password_verify($password, $user['password'])) {
+            if ($user && $password === $user['password']) {
                 // Login successful
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
+                // header("Location: views/dashboard.php");
                 header("Location: index.php?page=dashboard");
                 exit();
             } else {
@@ -57,10 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h3 class="card-title text-center mb-4">Login</h3>
 
                     <?php if (isset($error)): ?>
-                    <p class=" error"><?php echo htmlspecialchars($error); ?></p>
+                    <p class="error"><?php echo htmlspecialchars($error); ?></p>
                     <?php endif; ?>
 
-                    <form action="login.php" method="post" novalidate>
+                    <form action="index.php?page=login" method="post" novalidate>
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input class="form-control" type="text" id="username" name="username" required>
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </form>
 
                     <div class="mt-3 text-center">
-                        <a href="index.php?page=register">Don’t have an account? Register</a>
+                        <a href="index.php?page=register">Don't have an account? Register</a>
                     </div>
                 </div>
             </div>

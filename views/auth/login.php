@@ -24,11 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($user && $password === $user['password']) {
-                // Login successful
+            if($user && password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-                // header("Location: views/dashboard.php");
+
                 header("Location: index.php?page=dashboard");
                 exit();
             } else {
@@ -88,3 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </html>
 
 <script src="/assests//js//bootstrap.min.js"></script>
+
+<script>
+document.getElementById('username').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        document.getElementById('password').focus();
+    }
+});
+</script>

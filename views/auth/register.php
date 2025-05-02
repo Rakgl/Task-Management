@@ -8,48 +8,52 @@ require_once './config/db_connect.php';
 
 $error   = '';
 $success = '';
-$email   = '';
+$username   = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email            = trim($_POST['email']           ?? '');
-    $password         =        $_POST['password']      ?? '';
-    $confirm_password =        $_POST['confirm_password'] ?? '';
+    $username            = $_POST['username']           ?? '';
+    $password            = $_POST['password']           ?? '';
+    $confirm_password    = $_POST['confirm_password']   ?? '';
 
-    if ($email === '' || $password === '' || $confirm_password === '') {
+    // Validation
+    if ($username === '' || $password === '' || $confirm_password === '') {
         $error = 'Please fill in all fields.';
     } elseif ($password !== $confirm_password) {
         $error = 'Passwords do not match.';
     } else {
-        // Check existing email
-        $stmt = $conn->prepare(
-            'SELECT user_id FROM users WHERE email = ? LIMIT 1'
+        // Check if username already exists
+        $stmt = $pdo->prepare(
+            'SELECT user_id FROM users WHERE username = ? LIMIT 1'
         );
-        $stmt->bind_param('s', $email);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt->num_rows > 0) {
-            $error = 'This email is already registered.';
+        $stmt->bindValue(1, $username, PDO::PARAM_STR);
+        // $stmt->execute();
+        
+        if ($stmt->rowCount() > 0) {
+            $error = 'This username is already registered.';
+          
         } else {
-            $stmt->close();
             // Insert new user
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $conn->prepare(
-                'INSERT INTO users (email, password) VALUES (?, ?)'
+            $stmt = $pdo->prepare(
+                'INSERT INTO users (username, password) VALUES (?, ?)'
             );
-            $stmt->bind_param('ss', $email, $hash);
+            $stmt->bindValue(1, $username, PDO::PARAM_STR);
+            $stmt->bindValue(2, $hash, PDO::PARAM_STR);
 
             if ($stmt->execute()) {
                 $success = 'Registration successful! You may now <a href="index.php?page=login">login</a>.';
-                $email   = '';
+                // header("Location: index.php?page=dashboard");
+                $username = ''; // Reset username field
             } else {
                 $error = 'Registration failed. Please try again.';
             }
         }
-        $stmt->close();
+        $stmt->closeCursor(); // Close the statement
     }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -74,9 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <form action="index.php?page=register" method="post" novalidate>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" id="email" name="email" class="form-control" required
-                                value="<?= htmlspecialchars($email) ?>">
+                            <label for="username" class="form-label">username</label>
+                            <input type="username" id="username" name="username" class="form-control" required
+                                value="<?= htmlspecialchars($username) ?>">
                         </div>
 
                         <div class="mb-3">

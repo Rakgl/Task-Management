@@ -1,41 +1,51 @@
 <style>
+ul {
+    list-style: none;
+}
+
 .sidebar {
-    width: 250px;
-    background-color: #343a40;
-    color: #fff;
-    position: fixed;
-    top: 70px;
-    /* Adjust based on header height */
-    left: 0;
-    height: calc(100vh - 110px);
-    /* Adjust based on header and footer height */
-    padding: 20px;
+    width: 200px;
+    height: 100vh;
 }
 
-.sidebar h2 {
-    font-size: 20px;
-    margin-bottom: 20px;
+.list-group-item {
+    height: 40px;
 }
 
-.sidebar a {
-    color: #adb5bd;
-    text-decoration: none;
+.list-group-item:hover {
+    background-color: blue;
+    color: white;
+}
+
+.list-group-item-action:active {
+    background-color: blue;
+}
+
+.sub-task {
+    display: none;
+}
+
+.sub-task.show {
     display: block;
-    padding: 10px 0;
-    font-size: 16px;
-}
-
-.sidebar a:hover {
-    color: #fff;
-    background-color: #495057;
-    padding-left: 10px;
-    transition: all 0.3s;
 }
 </style>
-<div class="sidebar">
-    <h2>Menu</h2>
-    <a href="dashboard.php">Home</a>
-    <a href="tasks.php">Manage Tasks</a>
-    <a href="profile.php">Profile</a>
-    <a href="settings.php">Settings</a>
+
+<div class="sidebar col-md-3">
+    <div class="list-group">
+        <a href="index.php?page=dashboard" class="list-group-item list-group-item-action">Dashboard</a>
+        <a href="index.php?page=tasks" class="list-group-item list-group-item-action" id="tasksLink">Tasks</a>
+        <ul class="sub-task" id="subTaskList">
+            <li><a href="index.php?page=task-create" class="list-group-item list-group-item-action">Create Task</a></li>
+            <li><a href="index.php?page=task-edit" class="list-group-item list-group-item-action">Edit Task</a></li>
+        </ul>
+        <a href="index.php?page=profile" class="list-group-item list-group-item-action">Profile</a>
+    </div>
 </div>
+
+<script>
+document.getElementById('tasksLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    const subTaskList = document.getElementById('subTaskList');
+    subTaskList.classList.toggle('show');
+});
+</script>

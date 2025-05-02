@@ -1,22 +1,15 @@
-<style>
-footer {
-    background-color: #343a40;
-    color: #adb5bd;
-    text-align: center;
-    padding: 10px 20px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-footer p {
-    margin: 0;
-    font-size: 14px;
-}
-</style>
-<footer>
-    <p>&copy; <?php echo date("Y"); ?> Task Management. All rights reserved.</p>
+</main>
+</div>
+</div>
+<footer class="bg-dark text-white text-center py-3 mt-4">
+    <p>© 2025 Task Management</p>
 </footer>
+<!-- Bootstrap JS
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+</script> -->
+
+<script src="/assests//js//bootstrap.min.js"></script>
 </body>
 
 </html>

@@ -29,6 +29,12 @@ include_once './layout/header.php';
         include_once './layout/sidebar.php';
 
         switch ($page) {
+            case 'about':
+                include 'views/personal/about.php';
+                break;
+            case 'contact':
+                include 'views/personal/contact.php';
+                break;
             case 'dashboard':
                 include 'views/dashboard.php';
                 break;

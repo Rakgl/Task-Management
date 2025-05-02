@@ -46,6 +46,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assests//css//bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+    .input-group-append .input-group-text {
+        background-color: transparent;
+        border-left: none;
+        padding: 0.375rem 0.75rem;
+    }
+
+    .input-group .form-control {
+        border-right: 0;
+    }
+    </style>
 </head>
 
 <body>
@@ -67,7 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" id="password" name="password" class="form-control" required>
+                            <div class="input-group">
+                                <input type="password" id="password" name="password" class="form-control" required>
+                                <div class="input-group-append">
+                                    <!-- Show/Hide password button -->
+                                    <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="d-grid">
@@ -94,5 +114,16 @@ document.getElementById('username').addEventListener('keydown', function(event) 
         event.preventDefault();
         document.getElementById('password').focus();
     }
+});
+
+const togglePassword = document.getElementById('togglePassword');
+const passwordField = document.getElementById('password');
+
+togglePassword.addEventListener('click', function() {
+    const type = passwordField.type === 'password' ? 'text' : 'password';
+    passwordField.type = type;
+
+    const icon = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+    togglePassword.innerHTML = `<i class="${icon}"></i>`;
 });
 </script>

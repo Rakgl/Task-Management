@@ -12,21 +12,20 @@ if (isset($_SESSION['user_id'])) {
 require_once './config/db_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $email    = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
 
-    if ($username === '' || $password === '') {
+    if ($email === '' || $password === '') {
         $error = 'Please fill in both username and password.';
     } else {
         try {
-            // Check if the username exists
-            $stmt = $pdo->prepare('SELECT * FROM users WHERE username = ?');
-            $stmt->execute([$username]);
+            $stmt = $pdo->prepare('SELECT * FROM users WHERE email = ?');
+            $stmt->execute([$email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if($user && password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
+                $_SESSION['email'] = $user['email'];
 
                 header("Location: index.php?page=dashboard");
                 exit();
@@ -73,8 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <form action="index.php?page=login" method="post" novalidate>
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input class="form-control" type="text" id="username" name="username" required>
+                            <label for="username" class="form-label">Email</label>
+                            <input class="form-control" type="email" id="email" name="email" required>
                         </div>
 
                         <div class="mb-3">
@@ -82,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="input-group">
                                 <input type="password" id="password" name="password" class="form-control" required>
                                 <div class="input-group-append">
-                                    <!-- Show/Hide password button -->
                                     <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
                                         <i class="fas fa-eye"></i>
                                     </span>
@@ -109,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="/assests//js//bootstrap.min.js"></script>
 
 <script>
-document.getElementById('username').addEventListener('keydown', function(event) {
+document.getElementById('email').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         event.preventDefault();
         document.getElementById('password').focus();

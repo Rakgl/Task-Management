@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
     .navbar {
-        height: auto;
+        height: 50px;
     }
     </style>
 </head>
@@ -105,12 +105,5 @@ toggleExitFullScreen.addEventListener('click', () => {
     exitFullScreen();
     toggleFullScreen.style.display = 'block';
     toggleExitFullScreen.style.display = 'none';
-});
-
-document.querySelectorAll('a.nav-link').forEach(link => {
-    link.addEventListener('click', function() {
-        // Prevent exiting fullscreen when any link is clicked
-        // We do not call exitFullScreen here
-    });
 });
 </script>

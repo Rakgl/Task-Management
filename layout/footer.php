@@ -1,7 +1,7 @@
 </main>
 </div>
 </div>
-<footer class="bg-dark text-white text-center py-3 mt-4">
+<footer class="bg-dark text-white text-center py-3">
     <p>© 2025 Task Management</p>
 </footer>
 <!-- Bootstrap JS

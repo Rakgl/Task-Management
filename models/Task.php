@@ -13,6 +13,23 @@ class  Task {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getTaskCountByUserId($user_id, $status = null) {
+        try {
+            $query = "SELECT COUNT(*) FROM tasks WHERE user_id = ?";
+            $params = [$user_id];
+            if ($status !== null) {
+                $query .= " AND status = ?";
+                $params[] = $status;
+            }
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute($params);
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Error counting tasks for user_id $user_id: " . $e->getMessage());
+            return 0;
+        }
+    }
+
     // Fetch a single task by ID
     public function findById($id) {
         $stmt = $this->pdo->prepare("SELECT * FROM tasks WHERE id = ?");

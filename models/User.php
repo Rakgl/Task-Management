@@ -21,16 +21,35 @@ class User {
     }
 
     // Create a new user (e.g., for registration)
-    public function create($email, $password) {
+    public function create($email, $password, $role = 'user') {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->pdo->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
-        return $stmt->execute([$email, $hashedPassword]);
+        $stmt = $this->pdo->prepare("INSERT INTO users (email, password, role, created_at) VALUES (?, ?, ?, NOW())");
+        return $stmt->execute([$email, $hashedPassword, $role]);
     }
+    // public function create($email, $password) {
+    //     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    //     $stmt = $this->pdo->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
+    //     return $stmt->execute([$email, $hashedPassword]);
+    // }
 
     // Update user details (e.g., for profile updates)
-    public function update($id, $email) {
-        $stmt = $this->pdo->prepare("UPDATE users SET email = ? WHERE id = ?");
-        return $stmt->execute([$email, $id]);
+    public function update($id, $email, $role = null) {
+        $setClause = "email = ?";
+        $params = [$email, $id];
+        if ($role !== null) {
+            $setClause .= ", role = ?";
+            $params[] = $role;
+        }
+        $stmt = $this->pdo->prepare("UPDATE users SET $setClause WHERE id = ?");
+        return $stmt->execute($params);
+    }
+
+    // role user 
+    public function getRole($id) {
+        $stmt = $this->pdo->prepare("SELECT role FROM users WHERE id = ?");
+        $stmt->execute([$id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['role'] ?? 'user';
     }
 }
 ?>

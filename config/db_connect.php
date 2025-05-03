@@ -1,5 +1,5 @@
 <?php
-$db_host = 'norak-mysql-lzsxy5';
+$db_host = 'norak-mysql-rty4hc';
 $db_port = 3306; 
 $db_user = 'root';
 $db_password = 'root';

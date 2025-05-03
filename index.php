@@ -26,7 +26,7 @@ if (!isset($_SESSION['role']) && isset($_SESSION['user_id'])) {
     $_SESSION['role'] = $userModel->getRole($_SESSION['user_id']);
 }
 
-$allowed_pages = ['dashboard', 'logout', 'profile', 'about','contact'];
+$allowed_pages = ['dashboard', 'logout', 'about','contact'];
 if ($_SESSION['user_id'] != 1 && !in_array($page, $allowed_pages, true)) {
     header('Location: index.php?page=dashboard');
     ob_end_flush(); 

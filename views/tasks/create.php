@@ -9,11 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = $_POST['status'] ?? 'pending';
     $user_id = $_SESSION['user_id'];
 
-    // Basic validation
     if (empty($title)) {
         $error = "Title is required.";
     } else {
-        // Save the task
         $stmt = $pdo->prepare("INSERT INTO tasks (user_id, title, description, status, created_at) VALUES (?, ?, ?, ?, NOW())");
         $stmt->execute([$user_id, $title, $description, $status]);
 
@@ -33,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php echo htmlspecialchars($error); ?>
             </div>
             <?php endif; ?>
-            <form method="POST">
+            <form action="index.php?page=task-create" method="POST" novalidate>
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" class="form-control" id="title" name="title"
@@ -60,5 +58,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
-
 </div>
+
+<script>
+document.getElementById('title').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        document.getElementById('description').focus();
+    }
+});
+
+document.getElementById('description').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        document.getElementById('status').focus();
+    }
+});
+</script>

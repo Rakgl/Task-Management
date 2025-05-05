@@ -49,8 +49,10 @@ $tasks = $taskModel->getTasksByUserId($_SESSION['user_id']);
                             <a href="index.php?page=task-view&id=<?php echo $task['id']; ?>"
                                 class="btn btn-sm btn-primary">View</a>
                             <a href="index.php?page=task-edit&id=<?php echo $task['id']; ?>"
-                                class="btn btn-sm btn-outline-primary">Edit</a>
-                            <a href="index.php?page=delete&id=<?php echo $task['id']; ?>" class="btn btn-sm btn-danger"
+                                class="btn btn-sm btn-outline-primary"
+                                onclick="return confirm('Are you sure you want to edit this task?');">Edit</a>
+                            <a href="index.php?page=task-delete&id=<?php echo $task['id']; ?>"
+                                class="btn btn-sm btn-danger"
                                 onclick="return confirm('Are you sure you want to delete this task?');">Delete</a>
                         </td>
                     </tr>

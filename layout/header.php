@@ -23,7 +23,7 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse gap-3" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=dashboard" style="display: none;">Dashboard</a>
@@ -33,9 +33,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=about">About</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=contact">Contact</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);" id="toggleFullScreen">
                             <i class="fas fa-expand"></i>
@@ -48,7 +46,7 @@
                     </li>
                     <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=logout">Logout</a>
+                        <a class="nav-link btn-del" href="index.php?page=logout">Logout</a>
                     </li>
                     <?php else: ?>
                     <li class="nav-item">
@@ -64,11 +62,21 @@
     </nav>
 </body>
 
+<style>
+.btn-del {
+    color: red;
+    cursor: pointer;
+}
+
+.btn-del:hover {
+    color: darkred;
+}
+</style>
+
 <script>
 const toggleFullScreen = document.getElementById('toggleFullScreen');
 const toggleExitFullScreen = document.getElementById('toggleExitFullScreen');
 
-// Function to enter fullscreen
 function enterFullScreen() {
     if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
@@ -94,7 +102,6 @@ function exitFullScreen() {
     }
 }
 
-// Add event listeners
 toggleFullScreen.addEventListener('click', () => {
     enterFullScreen();
     toggleFullScreen.style.display = 'none';

@@ -4,6 +4,11 @@ require_once 'config/db_connect.php';
 require_once './models/User.php';
 ob_start();
 
+$userModel = new User($pdo);
+$username = $user['username'] ?? 'Unknown';
+$email = $user['email'] ?? 'Unknown';
+$role = $user['role'] ?? 'Unknown';
+
 $page = isset($_GET['page']) ? htmlspecialchars($_GET['page'], ENT_QUOTES, 'UTF-8') : 'dashboard';
 
 $public_pages = ['login', 'register', 'forgot-password'];
@@ -26,7 +31,7 @@ if (!isset($_SESSION['role']) && isset($_SESSION['user_id'])) {
     $_SESSION['role'] = $userModel->getRole($_SESSION['user_id']);
 }
 
-$allowed_pages = ['dashboard', 'logout', 'about','contact'];
+$allowed_pages = ['dashboard', 'logout', 'about','contact', 'profile', 'edit-profile'];
 if ($_SESSION['user_id'] != 1 && !in_array($page, $allowed_pages, true)) {
     header('Location: index.php?page=dashboard');
     ob_end_flush(); 
@@ -42,9 +47,6 @@ include_once './layout/header.php';
         switch ($page) {
             case 'about':
                 include 'views/personal/about.php';
-                break;
-            case 'contact':
-                include 'views/personal/contact.php';
                 break;
             case 'dashboard':
                 include 'views/dashboard.php';
@@ -66,6 +68,21 @@ include_once './layout/header.php';
                 break;
             case 'profile':
                 include_once 'views/users/profile.php';
+                break;
+            case 'list-profile':
+                include 'views/users/list-profile.php';
+                break;
+            case 'view-profile':
+                include 'views/users/view-detail.php';
+                break;
+            case 'create-profile':
+                include 'views/users/create.php';
+                break;
+            case 'edit-profile':
+                include 'views/users/edit.php';
+                break;
+            case 'user-delete':
+                include 'views/users/delete.php';
                 break;
             case 'logout':
                 include_once 'views/auth/logout.php';

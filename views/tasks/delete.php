@@ -9,13 +9,22 @@ if (!$task_id || !is_numeric($task_id)) {
     exit();
 }
 
-$deleted = $taskModel->delete($task_id, $_SESSION['user_id']);
-
-if ($deleted) {
-    header('Location: index.php?page=tasks');
+if ($_SESSION['user_id'] != 1) {
+    header('Location: index.php?page=dashboard');
     exit();
-} else {
-    header('Location: index.php?page=tasks');
+}
+
+try {
+    $deleted = $taskModel->delete($task_id, $_SESSION['user_id']);
+    if ($deleted) {
+        header('Location: index.php?page=tasks&success=delete_success');
+    } else {
+        header('Location: index.php?page=tasks&error=delete_failed');
+    }
+} catch (PDOException $e) {
+    error_log("Delete error for task_id $task_id: " . $e->getMessage());
+    header('Location: index.php?page=tasks&error=database_error');
+} finally {
     exit();
 }
 ?>

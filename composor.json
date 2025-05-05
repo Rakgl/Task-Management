@@ -1,8 +1,0 @@
-{
-    "name": "my-php-app",
-    "description": "PHP, HTML, and JS app hosted on Heroku",
-    "require": {
-      "php": "^7.4 || ^8.0"
-    }
-  }
-  

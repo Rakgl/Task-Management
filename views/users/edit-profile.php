@@ -3,16 +3,17 @@ require_once 'models/User.php';
 
 $userModel = new User($pdo);
 
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header('Location: index.php?page=dashboard&error=unauthorized');
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php?page=login&error=unauthorized');
     exit();
 }
 
-$userId = isset($_GET['id']) ? (int)$_GET['id'] : null;
-$user = $userId ? $userModel->findById($userId) : null;
+$userId = $_SESSION['user_id'];
+$user = $userModel->findById($userId);
 
 if (!$user) {
-    header('Location: index.php?page=list-profile&error=user_not_found');
+    header('Location: index.php?page=dashboard&error=invalid_user');
     exit();
 }
 
@@ -52,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    // Handle other profile updates
     if (isset($_POST['username'])) {
         $data = [
             'username' => is_array($_POST['username']) ? implode(',', $_POST['username']) : $_POST['username'],
@@ -59,11 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'phone' => is_array($_POST['phone']) ? implode(',', $_POST['phone']) : $_POST['phone'],
             'birthday' => is_array($_POST['birthday']) ? implode(',', $_POST['birthday']) : $_POST['birthday'],
             'profile' => is_array($_POST['profile']) ? implode(',', $_POST['profile']) : $_POST['profile'],
-            'position' => is_array($_POST['position']) ? implode(',', $_POST['position']) : $_POST['position'],
-            'role' => is_array($_POST['role']) ? implode(',', $_POST['role']) : $_POST['role']
+            'position' => is_array($_POST['position']) ? implode(',', $_POST['position']) : $_POST['position']
         ];
 
-        if ($userModel->update($userId, $data)) {
+        if ($userModel->updateProfile($userId, $data)) {
             $updateSuccess = true;
             $user = $userModel->findById($userId);
         } else {
@@ -76,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div style="width: 100%;">
     <div class="card shadow-lg border-0">
         <div class="card-header bg-primary text-white text-center py-4">
-            <h2 class="mb-0">Edit User</h2>
+            <h2 class="mb-0">Edit Profile</h2>
         </div>
         <div class="card-body">
             <div class="text-center mb-4">
@@ -101,15 +102,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <?php if ($uploadSuccess): ?>
             <div class="alert alert-success text-center animate__animated animate__fadeIn">Profile picture updated
-                successfully for user ID <?php echo htmlspecialchars($userId); ?>!</div>
+                successfully!</div>
             <?php elseif ($uploadError): ?>
             <div class="alert alert-danger text-center animate__animated animate__shakeX">
                 <?php echo htmlspecialchars($uploadError); ?></div>
             <?php endif; ?>
 
             <?php if ($updateSuccess): ?>
-            <div class="alert alert-success text-center animate__animated animate__fadeIn mt-3">User profile updated
-                successfully for user ID <?php echo htmlspecialchars($userId); ?>!</div>
+            <div class="alert alert-success text-center animate__animated animate__fadeIn mt-3">Profile updated
+                successfully!</div>
             <?php elseif ($updateError): ?>
             <div class="alert alert-danger text-center animate__animated animate__shakeX mt-3">
                 <?php echo htmlspecialchars($updateError); ?></div>
@@ -142,15 +143,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="date" class="form-control" id="birthday" name="birthday"
                             value="<?php echo htmlspecialchars($user['birthday'] ?? ''); ?>">
                     </div>
-                    <div class="col-md-6">
-                        <label for="role" class="form-label text-primary">Role</label>
-                        <select class="form-control" id="role" name="role" required>
-                            <option value="admin" <?php echo ($user['role'] === 'admin') ? 'selected' : ''; ?>>Admin
-                            </option>
-                            <option value="user" <?php echo ($user['role'] === 'user') ? 'selected' : ''; ?>>User
-                            </option>
-                        </select>
-                    </div>
                     <div class="col-12">
                         <label for="profile" class="form-label text-primary">Profile</label>
                         <textarea class="form-control" id="profile" name="profile"
@@ -159,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="d-flex gap-2 mt-4">
                     <div>
-                        <a href="index.php?page=list-profile" class="btn btn-secondary btn-lg">Back to List <i
+                        <a href="index.php?page=view-profile" class="btn btn-secondary btn-lg">Back to View Profile <i
                                 class="fas fa-arrow-left"></i></a>
                     </div>
                     <button type="submit" class="btn btn-primary btn-lg">Save Changes <i

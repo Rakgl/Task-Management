@@ -1,5 +1,4 @@
 <?php
-// Load models
 require_once 'models/User.php';
 require_once 'models/Task.php';
 

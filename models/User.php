@@ -72,5 +72,16 @@ class User {
         $stmt = $this->pdo->prepare("DELETE FROM users WHERE id = ?");
         return $stmt->execute([$id]);
     }
+
+    public function getNotifications($userId) {
+        $stmt = $this->pdo->prepare("SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC");
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function markNotificationAsRead($notificationId) {
+        $stmt = $this->pdo->prepare("UPDATE notifications SET is_read = TRUE WHERE id = ?");
+        return $stmt->execute([$notificationId]);
+    }
 }
 ?>

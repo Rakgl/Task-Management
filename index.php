@@ -31,7 +31,7 @@ if (!isset($_SESSION['role']) && isset($_SESSION['user_id'])) {
     $_SESSION['role'] = $userModel->getRole($_SESSION['user_id']);
 }
 
-$allowed_pages = ['dashboard', 'logout', 'about','contact', 'profile', 'edit-profile'];
+$allowed_pages = ['dashboard', 'logout', 'about','contact', 'profile', 'edit-profile-user'];
 if ($_SESSION['user_id'] != 1 && !in_array($page, $allowed_pages, true)) {
     header('Location: index.php?page=dashboard');
     ob_end_flush(); 
@@ -50,6 +50,13 @@ include_once './layout/header.php';
                 break;
             case 'dashboard':
                 include 'views/dashboard.php';
+                break;
+            case 'task-assign':
+                if ($_SESSION['role'] !== 'admin') {
+                    header('Location: index.php?page=dashboard&error=unauthorized');
+                    exit();
+                }
+                include 'views/tasks/assign.php';
                 break;
             case 'tasks':
                 include_once 'views/tasks/index.php';
@@ -80,6 +87,9 @@ include_once './layout/header.php';
                 break;
             case 'edit-profile':
                 include 'views/users/edit.php';
+                break;
+            case 'edit-profile-user':
+                include 'views/users/edit-profile.php';
                 break;
             case 'user-delete':
                 include 'views/users/delete.php';

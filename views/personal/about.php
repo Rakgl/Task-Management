@@ -26,15 +26,47 @@ $user = $userModel->findById($_SESSION['user_id'] ?? null);
                 organized with directories for public assets, includes, views, and models, ensuring scalability and
                 maintainability.
             </p>
+
+            <div class="ruler"></div>
+
+            <h3 class="mt-3">+ Source Code of the Project</h3>
+
+            <div class="d-flex p-2 github">
+
+
+                <ul>
+                    <li><a href="https://github.com/Rakgl/Task-Management" target="_blank"><i
+                                class="fab fa-github p-1"></i>Github</a></li>
+                    <li>_ Html</li>
+                    <li>_ PHP</li>
+                    <li>_ MYSQL</li>
+                    <li>_ JavaScript</li>
+                    <li>_ CSS</li>
+                </ul>
+            </div>
+
             <div class="text-center mt-4">
+
                 <a href="index.php?page=dashboard" class="btn btn-secondary btn-lg">Back to Dashboard <i
                         class="fas fa-arrow-left"></i></a>
             </div>
+
         </div>
+
     </div>
 </div>
 
 <style>
+.ruler {
+    border: 1px solid blue;
+    height: 1px;
+    width: 100%;
+}
+
+.github a {
+    text-decoration: none;
+}
+
 .card-header {
     border-radius: 10px 10px 0 0;
 }

@@ -15,6 +15,9 @@ if (!$user) {
     header('Location: index.php?page=list-profile&error=invalid_user');
     exit();
 }
+
+$from = isset($_GET['from']) ? $_GET['from'] : '';
+$backLink = $from === 'list' ? 'index.php?page=list-profile' : 'index.php?page=dashboard';
 ?>
 
 <div style="width: 100%;">
@@ -45,7 +48,7 @@ if (!$user) {
                 </div>
                 <div class="col-md-6">
                     <label class="form-label text-primary">Email</label>
-                    <p class="form-control-static"><?php echo htmlspecialchars($user['email']); ?></p>
+                    <p class="form-control-static"><?php echo htmlspecialchars($user['email'] ?? 'Not set'); ?></p>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label text-primary">Role</label>
@@ -74,8 +77,8 @@ if (!$user) {
             </div>
 
             <div class="text-center mt-4">
-                <a href="index.php?page=edit-profile&id=<?php echo htmlspecialchars($user['id']); ?>&from=list"
-                    class="btn btn-primary btn-lg">Edit User <i class="fas fa-edit"></i></a>
+                <!-- <a href="index.php?page=edit-profile&id=<?php echo htmlspecialchars($user['id']); ?>&from=list"
+                    class="btn btn-primary btn-lg">Edit User <i class="fas fa-edit"></i></a> -->
                 <a href="index.php?page=user-delete&id=<?php echo htmlspecialchars($user['id']); ?>&from=list"
                     class="btn btn-danger btn-lg ms-3"
                     onclick="return confirm('Are you sure you want to delete this user?');">Delete User <i

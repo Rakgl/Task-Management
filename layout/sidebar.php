@@ -147,7 +147,7 @@ ul {
             <a href="index.php?page=profile" class="list-group-item list-group-item-action">
                 <span><i class="fas fa-eye me-4 font-size-10"></i>View Profile</span>
             </a>
-            <a href="index.php?page=edit-profile-user" class="list-group-item list-group-item-action">
+            <a href="index.php?page=edit-profile-admin" class="list-group-item list-group-item-action">
                 <span><i class="fas fa-edit me-4 font-size-10"></i>Edit Profile</span>
             </a>
             <?php endif; ?>
@@ -163,7 +163,7 @@ ul {
             <a href="index.php?page=create-profile" class="list-group-item list-group-item-action">
                 <span><i class="fas fa-plus font-size-10" style="margin-right: 20px;"></i>Create Profile</span>
             </a>
-            <a href="index.php?page=edit-profile-user" class="list-group-item list-group-item-action">
+            <a href="index.php?page=edit-profile-admin" class="list-group-item list-group-item-action">
                 <i class="fas fa-edit me-3 font-size-10" style="margin-right: 20px;"></i>Edit Profile
             </a>
 

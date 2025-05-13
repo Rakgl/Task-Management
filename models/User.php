@@ -18,10 +18,10 @@ class User {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create($email, $password, $role = 'user') {
+    public function create($email, $password, $role = 'user', $username, $phone, $position, $birthday, $profile) {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->pdo->prepare("INSERT INTO users (email, password, role, created_at) VALUES (?, ?, ?, NOW())");
-        return $stmt->execute([$email, $hashedPassword, $role]);
+        $stmt = $this->pdo->prepare('INSERT INTO users (email, password, role, username, phone, position, birthday, profile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+        return $stmt->execute([$email, $hashedPassword, $role, $username, $phone, $position, $birthday, $profile]);
     }
 
     public function updateProfilePicture($id, $filename) {
@@ -29,6 +29,69 @@ class User {
         return $stmt->execute([$filename, $id]);
     }
 
+    // public function updateProfile($id, $data) {
+    //     try {
+    //         // Validate required fields
+    //         if (empty($data['username'])) {
+         
+    //             throw new Exception('Username is required.');
+    //         }
+    //         if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+             
+    //             throw new Exception('Invalid or missing email.');
+    //         }
+    //         if (empty($data['role']) || !in_array($data['role'], ['admin', 'user'])) {
+              
+    //             throw new Exception('Invalid role.');
+    //         }
+
+    //         // Check for duplicate email
+    //         $stmt = $this->pdo->prepare('SELECT id FROM users WHERE email = ? AND id != ?');
+    //         $stmt->execute([$data['email'], $id]);
+    //         if ($stmt->fetch()) {
+    //             throw new Exception('Email is already in use.');
+    //         }
+
+    //         // Prepare data
+    //         $profileData = [
+    //             'username' => $data['username'],
+    //             'email' => $data['email'],
+    //             'phone' => $data['phone'] ?? null,
+    //             'birthday' => $data['birthday'] ?? null,
+    //             'profile' => $data['profile'] ?? null,
+    //             'position' => $data['position'] ?? null,
+    //             'role' => $data['role']
+    //         ];
+
+    //         // Update query
+    //         $stmt = $this->pdo->prepare('UPDATE users SET username = ?, email = ?, phone = ?, position = ?, birthday = ?, role = ?, profile = ? WHERE id = ?');
+    //         $result = $stmt->execute([
+    //             $profileData['username'],
+    //             $profileData['email'],
+    //             $profileData['phone'],
+    //             $profileData['birthday'],
+    //             $profileData['profile'],
+    //             $profileData['position'],
+    //             $profileData['role'],
+    //             $id
+    //         ]);
+
+    //         if ($result) {
+    //             error_log("Profile updated for user ID $id: " . json_encode($profileData));
+    //             // Verify update
+    //             $stmt = $this->pdo->prepare('SELECT username, email, role, created_at FROM users WHERE id = ?');
+    //             $stmt->execute([$id]);
+    //             $updatedUser = $stmt->fetch(PDO::FETCH_ASSOC);
+    //             error_log("Verified updated user ID $id: " . print_r($updatedUser, true));
+    //         } else {
+    //             error_log("Profile update failed for user ID $id");
+    //         }
+    //         return $result;
+    //     } catch (Exception $e) {
+    //         error_log("Profile update error for user ID $id: " . $e->getMessage());
+    //         return false;
+    //     }
+    // }
     public function updateProfile($id, $data) {
         $stmt = $this->pdo->prepare('UPDATE users SET username = ?, phone = ?, birthday = ?, profile = ?, position = ? WHERE id = ?');
         return $stmt->execute([
@@ -41,16 +104,31 @@ class User {
         ]);
     }
 
-    public function update($id, $email, $role = null) {
-        $setClause = "email = ?";
-        $params = [$email, $id];
-        if ($role !== null) {
-            $setClause .= ", role = ?";
-            $params[] = $role;
-        }
-        $stmt = $this->pdo->prepare("UPDATE users SET $setClause WHERE id = ?");
-        return $stmt->execute($params);
-    }
+
+    // public function update($email, $role = null, $id) {
+    //     try {
+    //         $stmt = $this->pdo->prepare('SELECT id FROM users WHERE email = ? AND id != ?');
+    //         $stmt->execute([$email, $id]);
+    //         if ($stmt->fetch()) {
+    //             error_log('Update failed: Email is already in use.');
+    //             return false;
+    //         }
+
+    //         $setClause = "email = ?";
+    //         $params = [$email];
+    //         if ($role !== null) {
+    //             $setClause .= ", role = ?";
+    //             $params[] = $role;
+    //         }
+    //         $params[] = $id;
+    //         $stmt = $this->pdo->prepare("UPDATE users SET $setClause WHERE id = ?");
+    //         return $stmt->execute($params);
+    //     } catch (Exception $e) {
+    //         error_log('Update failed: ' . $e->getMessage());
+    //         return false;
+    //     }
+        
+    // }
 
     public function getRole($id) {
         $stmt = $this->pdo->prepare("SELECT role FROM users WHERE id = ?");
@@ -73,15 +151,5 @@ class User {
         return $stmt->execute([$id]);
     }
 
-    public function getNotifications($userId) {
-        $stmt = $this->pdo->prepare("SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC");
-        $stmt->execute([$userId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function markNotificationAsRead($notificationId) {
-        $stmt = $this->pdo->prepare("UPDATE notifications SET is_read = TRUE WHERE id = ?");
-        return $stmt->execute([$notificationId]);
-    }
 }
 ?>

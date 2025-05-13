@@ -46,11 +46,11 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     class="btn btn-info btn-sm">
                                     <i class="fas fa-eye"></i> View
                                 </a>
-                                <a href="index.php?page=edit-profile&id=<?php echo htmlspecialchars($user['id']); ?>&from=list"
+                                <!-- <a href="index.php?page=edit-profile&id=<?php echo htmlspecialchars($user['id']); ?>&from=list"
                                     class="btn btn-primary btn-sm"
                                     onclick="return confirm('Are you sure you want to edit this user?');">
                                     <i class="fas fa-edit"></i>Edit
-                                </a>
+                                </a> -->
                                 <a href="index.php?page=user-delete&id=<?php echo htmlspecialchars($user['id']); ?>&from=list"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Are you sure you want to delete this user?');">

@@ -59,13 +59,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'phone' => is_array($_POST['phone']) ? implode(',', $_POST['phone']) : $_POST['phone'],
             'birthday' => is_array($_POST['birthday']) ? implode(',', $_POST['birthday']) : $_POST['birthday'],
             'profile' => is_array($_POST['profile']) ? implode(',', $_POST['profile']) : $_POST['profile'],
-            'position' => is_array($_POST['position']) ? implode(',', $_POST['position']) : $_POST['position'],
-            'role' => is_array($_POST['role']) ? implode(',', $_POST['role']) : $_POST['role']
+            'position' => is_array($_POST['position']) ? implode(',', $_POST['position']) : $_POST['position']
         ];
 
-        if ($userModel->update($userId, $data)) {
+        if ($userModel->updateProfile($userId, $data)) {
             $updateSuccess = true;
             $user = $userModel->findById($userId);
+            header('Location: index.php?page=list-profile');
+            exit();
         } else {
             $updateError = 'Failed to update user profile. Please try again.';
         }

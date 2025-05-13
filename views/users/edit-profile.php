@@ -67,6 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($userModel->updateProfile($userId, $data)) {
             $updateSuccess = true;
             $user = $userModel->findById($userId);
+            header('Location: index.php?page=profile');
+            exit();
         } else {
             $updateError = 'Failed to update user profile. Please try again.';
         }

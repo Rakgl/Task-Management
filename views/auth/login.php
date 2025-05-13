@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="col-md-6 col-lg-4">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h3 class="card-title text-center mb-4">Login!!</h3>
+                    <h3 class="card-title text-center mb-4">Login!!!!!!</h3>
 
                     <?php if (isset($error)): ?>
                     <p class="error"><?php echo htmlspecialchars($error); ?></p>
@@ -95,6 +95,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="mt-3 text-center">
                         <a href="index.php?page=register">Don't have an account? Register</a>
+                    </div>
+
+                    <div class="mt-3 text-center">
+                        <h4>Email: admin@gmail.com</h4>
+                        <h4>Password: password12345</h4>
+                    </div>
+
+                    <div class="mt-3 text-center">
+                        <h4>+ User</h4>
+                        <h4>Email: rakkosal8@gmail.com</h4>
+                        <h4>Password: 12345</h4>
                     </div>
                 </div>
             </div>

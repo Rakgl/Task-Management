@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
                     style="width: 150px; height: 150px; font-size: 24px;">No Image</div>
                 <?php endif; ?>
                 <div>
-                    <a href="index.php?page=edit-profile">edit profile</a>
+                    <a href="index.php?page=edit-profile-admin">edit profile</a>
                 </div>
             </div>
 
